@@ -3,6 +3,7 @@
 """
 
 from flask import request
+from os import getenv
 from typing import List, TypeVar
 
 
@@ -11,7 +12,7 @@ class Auth:
     """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ def require_auth
+        """ require_auth
         """
         if not path or not excluded_paths:
             return True
@@ -28,12 +29,19 @@ class Auth:
         return True
 
     def authorization_header(self, request=None) -> str:
-        """ def authorization_header
+        """ authorization_header
         """
         if request:
             return request.headers.get("Authorization")
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ def curent_user
+        """ current_user
         """
         return None
+
+    def session_cookie(self, request=None):
+        """ session_cookie
+        """
+        if request:
+            session_name = getenv("SESSION_NAME")
+            return request.cookies.get(session_name, None)
